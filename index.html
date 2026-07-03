@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khmer News | ព័ត៌មានទាន់ហេតុការណ៍២០២៦</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&family=Noto+Sans+Khmer:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Noto Sans Khmer', 'Battambang', Arial, sans-serif;
+            color: #212529;
+            background-color: #ffffff;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+        .khmer-font {
+            font-family: 'Noto Sans Khmer', sans-serif;
+        }
+        .bg-gradient-blue { background: linear-gradient(135deg, #0d6efd, #0a58ca); }
+        .bg-gradient-green { background: linear-gradient(135deg, #198754, #146c43); }
+        .bg-gradient-orange { background: linear-gradient(135deg, #fd7e14, #ca6510); }
+        
+        /* Ticker Animation */
+        .ticker-wrapper { height: 30px; }
+        .ticker-content {
+            white-space: nowrap;
+            position: absolute;
+            animation: tickerLoop 30s linear infinite;
+        }
+        @keyframes tickerLoop {
+            0% { transform: translate3d(100%, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+        .ticker-content:hover { animation-play-state: paused; cursor: pointer; }
+
+        /* Card Styles */
+        .hero-card { height: 420px; }
+        .hero-card img { width: 100%; height: 100%; object-fit: cover; }
+        .gradient-overlay { background: linear-gradient(transparent, rgba(0,0,0,0.85)); }
+        
+        .custom-card {
+            border-radius: 12px !important;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .custom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+        .card-zoom { transition: transform 0.5s ease; }
+        .custom-card:hover .card-zoom { transform: scale(1.06); }
+        
+        .line-clamp-2 {
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        /* Dark Mode Styling */
+        body.dark-theme { background-color: #121212; color: #f8f9fa; }
+        body.dark-theme .bg-light, body.dark-theme #main-nav { background-color: #1e1e1e !important; color: #f8f9fa !important; }
+        body.dark-theme .card:not(.bg-gradient-blue):not(.bg-gradient-green):not(.bg-gradient-orange):not(.hero-card) {
+            background-color: #2a2a2a; color: #ffffff;
+        }
+        body.dark-theme .text-muted { color: #aaa !important; }
+        body.dark-theme .form-control { background-color: #2b2b2b; border-color: #444; color: #fff; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-dark text-white py-2">
+        <div class="container d-flex align-items-center overflow-hidden position-relative">
+            <span class="badge bg-danger me-3 px-3 py-2 text-uppercase fw-bold text-nowrap">ទាន់ហេតុការណ៍</span>
+            <div class="ticker-wrapper w-100 overflow-hidden position-relative">
+                <div class="ticker-content d-flex" id="ticker-slider">
+                    <span class="me-5">| កម្ពុជាបើកសម្ពោធឧទ្យានបច្ចេកវិទ្យាថ្មីថ្នាក់ជាតិ</span>
+                    <span class="me-5">| AI កំពុងផ្លាស់ប្តូរមុខមាត់ប្រព័ន្ធអប់រំជំនាន់ថ្មី</span>
+                    <span class="me-5">| ការប្រកួតបាល់ទាត់ជើងឯកជាតិចាប់ផ្តើមនៅថ្ងៃនេះ</span>
+                    <span class="me-5">| សេដ្ឋកិច្ចកម្ពុជារក្សាកំណើនរឹងមាំជានិរន្តរ៍</span>
+                </div>
+            </div>
+            <button id="dark-mode-toggle" class="btn btn-sm btn-outline-light ms-3 text-nowrap">
+                <i class="fas fa-moon"></i> របៀបងងឹត
+            </button>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm" id="main-nav">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center fw-bold text-primary" href="#">
+                <i class="fa-solid fa-newspaper me-2 fs-3"></i>
+                <span class="khmer-font">Khmer News</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 khmer-font">
+                    <li class="nav-item"><a class="nav-link active" href="#hero">ទំព័រដើម</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#latest">ព័ត៌មានទាំងអស់ </a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">ទំនាក់ទំនង</a></li>
+                </ul>
+                <form class="d-flex" id="search-form">
+                    <input class="form-control me-2" type="search" id="search-input" placeholder="ស្វែងរកចំណងជើងព័ត៌មាន...">
+                    <button class="btn btn-outline-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <section id="hero" class="py-4 bg-light">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card bg-dark text-white border-0 overflow-hidden shadow hero-card">
+                        <img src="https://picsum.photos/800/450?random=100" class="card-img" alt="Featured News">
+                        <div class="card-img-overlay d-flex flex-column justify-content-end gradient-overlay">
+                            <span class="badge bg-primary mb-2 align-self-start">ព័ត៌មានលេចធ្លោជាងគេ</span>
+                            <h2 class="card-title fw-bold text-white mb-2">ការអភិវឌ្ឍន៍បច្ចេកវិទ្យាឌីជីថល និងសេដ្ឋកិច្ចបៃតងនៅកម្ពុជាឆ្នាំ ២០២៦</h2>
+                            <p class="card-text text-light d-none d-md-block">រាជរដ្ឋាភិបាលបានដាក់ចេញនូវយុទ្ធសាស្ត្រថ្មី ដើម្បីជំរុញការប្រើប្រាស់បច្ចេកវិទ្យាឆ្លាតវៃ និងថាមពលកកើតឡើងវិញប្រកបដោយនិរន្តរភាពសម្រាប់ពេលអនាគត។</p>
+                            <a href="#" class="btn btn-primary align-self-start mt-2">អានបន្ថែម</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card p-3 border-0 shadow-sm bg-gradient-blue text-white mb-3">
+                        <h5 class="fw-bold"><i class="fa-solid fa-bolt me-2"></i> ចំណាប់អារម្មណ៍</h5>
+                        <p class="small mb-0">ប្រភពព័ត៌មានទាន់ហេតុការណ៍ រហ័ស និងមានទំនុកចិត្តខ្ពស់បំផុតសម្រាប់មិត្តអ្នកអានទូទាំងប្រទេស។</p>
+                    </div>
+                    <div class="card p-3 border-0 shadow-sm bg-gradient-green text-white">
+                        <h5 class="fw-bold"><i class="fa-solid fa-chart-line me-2"></i> ចក្ខុវិស័យឌីជីថល</h5>
+                        <p class="small mb-0">នាំមកនូវចំណេះដឹងផ្នែកបច្ចេកវិទ្យាថ្មីៗ ការអប់រំ សេដ្ឋកិច្ច និងការកម្សាន្តសម្បូរបែប។</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="latest" class="py-5">
+        <div class="container">
+            <h3 class="border-start border-primary border-4 padd-custom ps-2 mb-4 fw-bold">បណ្តុំព័ត៌មានថ្មីៗ សំខាន់</h3>
+            <div class="row g-4" id="news-container">
+                
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="ឧទ្យានបច្ចេកវិទ្យាថ្មី">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=1" class="card-img-top card-zoom"><span class="badge bg-primary position-absolute top-0 start-0 m-2">បច្ចេកវិទ្យា</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">កម្ពុជាបើកសម្ពោធឧទ្យានបច្ចេកវិទ្យាថ្មីថ្នាក់ជាតិ</h5>
+                            <p class="card-text text-muted small flex-grow-1">គម្រោងថ្មីនេះនឹងជួយគាំទ្រដល់អាជីវកម្មបង្កើតថ្មី (Startups) និងការស្រាវជ្រាវបច្ចេកវិទ្យាទំនើប។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">ថ្ងៃនេះ</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="AI អប់រំ">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=2" class="card-img-top card-zoom"><span class="badge bg-success position-absolute top-0 start-0 m-2">អប់រំ</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">AI កំពុងផ្លាស់ប្តូរមុខមាត់ប្រព័ន្ធអប់រំជំនាន់ថ្មី</h5>
+                            <p class="card-text text-muted small flex-grow-1">ការប្រើប្រាស់បញ្ញាសិប្បនិម្មិតក្នុងថ្នាក់រៀនជួយឲ្យសិស្សងាយយល់ និងអភិវឌ្ឍចំណេះដឹងលឿនជាងមុន។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">ថ្ងៃនេះ</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="កីឡាបាល់ទាត់">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=3" class="card-img-top card-zoom"><span class="badge bg-danger position-absolute top-0 start-0 m-2">កីឡា</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">ការប្រកួតបាល់ទាត់ជើងឯកជាតិចាប់ផ្តើមនៅថ្ងៃនេះ</h5>
+                            <p class="card-text text-muted small flex-grow-1">ក្រុមខ្លាំងៗទូទាំងប្រទេសចូលរួមប្រកួតប្រជែងដណ្តើមពានរង្វាន់ធំប្រចាំឆ្នាំនៅពហុកីឡដ្ឋានជាតិ។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">ថ្ងៃនេះ</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="សេដ្ឋកិច្ចកម្ពុជា">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=4" class="card-img-top card-zoom"><span class="badge bg-info text-dark position-absolute top-0 start-0 m-2">សេដ្ឋកិច្ច</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">សេដ្ឋកិច្ចកម្ពុជារក្សាកំណើនរឹងមាំជានិរន្តរ៍</h5>
+                            <p class="card-text text-muted small flex-grow-1">ធនាគារពិភពលោកបានព្យាករណ៍ថា សេដ្ឋកិច្ចកម្ពុជានឹងមានកំណើនវិជ្ជមានខ្ពស់ក្នុងតំបន់អាស៊ាន។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">ម្សិលមិញ</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="ទេសចរណ៍ សៀមរាប">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=5" class="card-img-top card-zoom"><span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">ទេសចរណ៍</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">ភ្ញៀវទេសចរអន្តរជាតិមកកម្សាន្តខេត្តសៀមរាបកើនឡើងខ្លាំង</h5>
+                            <p class="card-text text-muted small flex-grow-1">ការបើកជើងហោះហើរត្រង់ថ្មីៗជួយទាក់ទាញភ្ញៀវទេសចរឱ្យមកទស្សនាប្រាសាទអង្គរវត្តកាន់តែច្រើន។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">ម្សិលមិញ</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="តម្លៃមាស ទីផ្សារ">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=6" class="card-img-top card-zoom"><span class="badge bg-secondary position-absolute top-0 start-0 m-2">អាជីវកម្ម</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">តម្លៃមាសក្នុងស្រុកប្រែប្រួលតាមទីផ្សារអន្តរជាតិ</h5>
+                            <p class="card-text text-muted small flex-grow-1">អ្នកជំនាញណែនាំឱ្យប្រជាពលរដ្ឋតាមដានព័ត៌មានសេដ្ឋកិច្ចមុននឹងសម្រេចចិត្តវិនិយោគលើមាស។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">ម្សិលមិញ</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="វ៉ាក់សាំង សុខភាព">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=7" class="card-img-top card-zoom"><span class="badge bg-success position-absolute top-0 start-0 m-2">សុខភាព</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">ក្រសួងសុខាភិបាលដាស់តឿនឱ្យថែរក្សាសុខភាពក្នុងរដូវភ្លៀង</h5>
+                            <p class="card-text text-muted small flex-grow-1">សូមប្រុងប្រយ័ត្នចំពោះជំងឺគ្រុនឈាម និងជំងឺឆ្លងផ្សេងៗដោយបរិភោគអាហារមានអនាម័យ។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">២ ថ្ងៃមុន</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="ភាពយន្ត កម្សាន្ត">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=8" class="card-img-top card-zoom"><span class="badge bg-dark position-absolute top-0 start-0 m-2">កម្សាន្ត</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">ភាពយន្តខ្នាតធំខ្មែរត្រៀមចាក់បញ្ចាំងនៅលើឆាកអន្តរជាតិ</h5>
+                            <p class="card-text text-muted small flex-grow-1">នេះជាមោទនភាពថ្មីមួយសម្រាប់វិស័យភាពយន្តខ្មែរ ដែលទទួលបានការគាំទ្រពីបរទេស។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">២ ថ្ងៃមុន</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="កសិកម្ម ស្រូវ">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=9" class="card-img-top card-zoom"><span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">កសិកម្ម</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">ការនាំចេញអង្ករខ្មែរទៅកាន់អឺរ៉ុបកើនឡើង ២០%</h5>
+                            <p class="card-text text-muted small flex-grow-1">គុណភាពអង្ករកម្ពុជានៅតែរក្សាបានចំណាត់ថ្នាក់ល្អ និងមានការបញ្ជាទិញច្រើន។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">៣ ថ្ងៃមុន</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="អាហារូបករណ៍ សិស្ស">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=10" class="card-img-top card-zoom"><span class="badge bg-success position-absolute top-0 start-0 m-2">អប់រំ</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">ការប្រកាសអាហារូបករណ៍ទៅសិក្សានៅប្រទេសជប៉ុន</h5>
+                            <p class="card-text text-muted small flex-grow-1">ឱកាសល្អសម្រាប់និស្សិតខ្មែរក្នុងការដាក់ពាក្យស្នើសុំអាហារូបករណ៍ពេញថ្លៃ។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">៣ ថ្ងៃមុន</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="ទូរស័ព្ទ ស្មាតហ្វូន">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=11" class="card-img-top card-zoom"><span class="badge bg-primary position-absolute top-0 start-0 m-2">បច្ចេកវិទ្យា</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">ក្រុមហ៊ុនបច្ចេកវិទ្យាយក្សប្រកាសចេញស្មាតហ្វូនអេក្រង់បត់</h5>
+                            <p class="card-text text-muted small flex-grow-1">ទូរស័ព្ទជំនាន់ថ្មីនេះបំពាក់ដោយមុខងារ AI ទំនើបចុងក្រោយបង្អស់។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">៤ ថ្ងៃមុន</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="បរិស្ថាន ដើមឈើ">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=12" class="card-img-top card-zoom"><span class="badge bg-secondary position-absolute top-0 start-0 m-2">បរិស្ថាន</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">យុទ្ធនាការដាំកូនឈើ ១លានដើមដើម្បីសហគមន៍បៃតង</h5>
+                            <p class="card-text text-muted small flex-grow-1">ប្រជាពលរដ្ឋ និងយុវជនរួមគ្នាដាំកូនឈើដើម្បីជួយកាត់បន្ថយបម្រែបម្រួលអាកាសធាតុ។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">៤ ថ្ងៃមុន</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="រថយន្ត អគ្គិសនី">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=13" class="card-img-top card-zoom"><span class="badge bg-primary position-absolute top-0 start-0 m-2">បច្ចេកវិទ្យា</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">ការប្រើប្រាស់រថយន្តអគ្គិសនី (EV) កើនឡើងនៅភ្នំពេញ</h5>
+                            <p class="card-text text-muted small flex-grow-1">ស្ថានីយបញ្ចូលថាមពលអគ្គិសនីត្រូវបានបង្កើតឡើងកាន់តែច្រើនកន្លែង។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">៥ ថ្ងៃមុន</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="រត់ប្រណាំង សប្បុរសធម៌">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=14" class="card-img-top card-zoom"><span class="badge bg-danger position-absolute top-0 start-0 m-2">កីឡា</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">ព្រឹត្តិការណ៍រត់ប្រណាំងសប្បុរសធម៌រកមូលនិធិជួយមន្ទីរពេទ្យ</h5>
+                            <p class="card-text text-muted small flex-grow-1">មហាជនរាប់ពាន់នាក់បានចុះឈ្មោះចូលរួមរត់ដើម្បីសុខភាព និងជួយសង្គម។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">៥ ថ្ងៃមុន</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="អាជីវកម្ម ខ្នាតតូច">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=15" class="card-img-top card-zoom"><span class="badge bg-secondary position-absolute top-0 start-0 m-2">អាជីវកម្ម</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">វគ្គបណ្តុះបណ្តាលឥតគិតថ្លៃសម្រាប់ម្ចាស់អាជីវកម្មខ្នាតតូច</h5>
+                            <p class="card-text text-muted small flex-grow-1">កម្មវិធីជួយពង្រឹងសមត្ថភាពការលក់អនឡាញ និងគ្រប់គ្រងហិរញ្ញវត្ថុ។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">៦ ថ្ងៃមុន</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="អាកាសធាតុ ក្តៅ">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=16" class="card-img-top card-zoom"><span class="badge bg-info text-dark position-absolute top-0 start-0 m-2">អាកាសធាតុ</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">ការព្យាករណ៍អាកាសធាតុ៖ នឹងមានភ្លៀងកក់ខែនៅតំបន់ខ្លះ</h5>
+                            <p class="card-text text-muted small flex-grow-1">សូមបងប្អូនប្រុងប្រយ័ត្នចំពោះបាតុភូតផ្គររន្ទះ និងខ្យល់កន្ត្រាក់។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">៦ ថ្ងៃមុន</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="តន្ត្រី ប្រគំតន្ត្រី">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=17" class="card-img-top card-zoom"><span class="badge bg-dark position-absolute top-0 start-0 m-2">កម្សាន្ត</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">ការប្រគំតន្ត្រីសកលដ៏ធំប្រចាំឆ្នាំនឹងរៀបចំនៅចុងសប្តាហ៍នេះ</h5>
+                            <p class="card-text text-muted small flex-grow-1">មានការចូលរួមពីតារាចម្រៀងល្បីៗជាច្រើនរូប ព្រមទាំងមានការផ្សាយផ្ទាល់។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">១ សប្តាហ៍មុ</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="យោគៈ សុខភាព">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=18" class="card-img-top card-zoom"><span class="badge bg-success position-absolute top-0 start-0 m-2">សុខភាព</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">អត្ថប្រយោជន៍នៃការហាត់យោគៈ (Yoga) រាល់ព្រឹក</h5>
+                            <p class="card-text text-muted small flex-grow-1">ជួយឱ្យអារម្មណ៍ស្រស់ថ្លា កាត់បន្ថយស្ត្រេស និងពង្រឹងសុខភាពរាងកាយបានយ៉ាងល្អ។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">១ សប្តាហ៍មុន</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="ស្ពាន ហេដ្ឋារចនាសម្ព័ន្ធ">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=19" class="card-img-top card-zoom"><span class="badge bg-info text-dark position-absolute top-0 start-0 m-2">ជាតិ</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">វឌ្ឍនភាពនៃការសាងសង់ស្ពានអាកាសថ្មីសម្រេចបាន ៨០%</h5>
+                            <p class="card-text text-muted small flex-grow-1">គម្រោងនេះនឹងជួយកាត់បន្ថយការកកស្ទះចរាចរណ៍យ៉ាងច្រើនពេលដាក់ឱ្យប្រើប្រាស់។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">១ សប្តាហ៍មុន</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 news-card-item" data-title="សៀវភៅ អំណាន">
+                    <div class="card h-100 border-0 shadow-sm custom-card">
+                        <div class="position-relative overflow-hidden"><img src="https://picsum.photos/600/400?random=20" class="card-img-top card-zoom"><span class="badge bg-success position-absolute top-0 start-0 m-2">អប់រំ</span></div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold fs-6 line-clamp-2">ពិព័រណ៍សៀវភៅថ្នាក់ជាតិទទួលបានការគាំទ្រពីយុវជន</h5>
+                            <p class="card-text text-muted small flex-grow-1">ការចូលរួមអានសៀវភៅកាន់តែច្រើនជួយជម្រុញចំណេះដឹងសង្គមឱ្យកាន់តែរីកចម្រើន។</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top"><small class="text-muted">១ សប្តាហ៍មុន</small><a href="#" class="btn btn-sm btn-link p-0 text-decoration-none">អានបន្ត</a></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card border-0 shadow p-4 rounded-4">
+                        <h3 class="fw-bold text-center mb-4">ទាក់ទងមកយើង</h3>
+                        <form id="contact-form" novalidate>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">ឈ្មោះរបស់អ្នក</label>
+                                <input type="text" class="form-control" id="contact-name" required placeholder="បញ្ចូលឈ្មោះ...">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">អ៊ីមែល</label>
+                                <input type="email" class="form-control" id="contact-email" required placeholder="example@mail.com">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">សាររបស់អ្នក</label>
+                                <textarea class="form-control" id="contact-message" rows="4" required placeholder="សរសេរសារ..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">ផ្ញើសារចេញ <i class="fas fa-paper-plane ms-1"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-light py-4 text-center">
+        <div class="container text-muted small">
+            &copy; 2026 Khmer News. រក្សាសិទ្ធិគ្រប់យ៉ាងដោយក្រុមការងារបច្ចេកវិទ្យា។
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            
+            // Dark Mode Toggle
+            const darkModeToggle = document.getElementById("dark-mode-toggle");
+            const bodyElement = document.body;
+            
+            darkModeToggle.addEventListener("click", () => {
+                bodyElement.classList.toggle("dark-theme");
+                if (bodyElement.classList.contains("dark-theme")) {
+                    darkModeToggle.innerHTML = `<i class="fas fa-sun"></i> របៀបពន្លឺ`;
+                } else {
+                    darkModeToggle.innerHTML = `<i class="fas fa-moon"></i> របៀបងងឹត`;
+                }
+            });
+
+            // Search Filter System (ស្វែងរកព័ត៌មានទាំង២០)
+            const searchForm = document.getElementById("search-form");
+            const searchInput = document.getElementById("search-input");
+            const newsCards = document.querySelectorAll(".news-card-item");
+
+            searchForm.addEventListener("submit", function (e) {
+                e.preventDefault();
+                const keyword = searchInput.value.toLowerCase().trim();
+
+                newsCards.forEach(card => {
+                    const indexTitle = card.getAttribute("data-title").toLowerCase();
+                    if (indexTitle.includes(keyword)) {
+                        card.style.display = "block"; // បង្ហាញបើត្រូវពាក្យគន្លឹះ
+                    } else {
+                        card.style.display = "none";  // លាក់បើមិនត្រូវ
+                    }
+                });
+                
+                // រមៀលអេក្រង់ទៅផ្នែកព័ត៌មានស្វ័យប្រវត្ត
+                document.getElementById("latest").scrollIntoView({ behavior: "smooth" });
+            });
+
+            // Contact Form Validation
+            const contactForm = document.getElementById("contact-form");
+            contactForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                const name = document.getElementById("contact-name").value;
+                const email = document.getElementById("contact-email").value;
+                const msg = document.getElementById("contact-message").value;
+
+                if(name && email && msg) {
+                    alert("សូមអរគុណ! សាររបស់អ្នកត្រូវបានផ្ញើដោយជោគជ័យ។");
+                    contactForm.reset();
+                } else {
+                    alert("សូមបំពេញព័ត៌មានឲ្យបានគ្រប់គ្រាន់!");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
